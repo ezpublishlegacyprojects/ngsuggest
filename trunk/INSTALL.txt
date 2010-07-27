@@ -47,6 +47,7 @@ Installing:
 		- Section: array of section id to limit the search
 		- Classes: array of class id to limit the search
 		- FacetField: what field will be used for facets (ngsuggest_text or ezf_df_text or other)
+		- Installation: optional to avoid database queries (SELECT value FROM ezsite_data WHERE name='ezfind_site_id')
 
 7. Clear cache.
 

@@ -1,0 +1,8 @@
+Netgen Suggest changelog
+
+1.0beta
+ - showing facet counts (contributed by Olivier Portier)
+ - performance improvement with installation_id ini setting
+
+1.0alpha
+ - initial release

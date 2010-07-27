@@ -155,7 +155,11 @@
 						text = resultObjects[i].text;
 						
 					if (settings.highlightMatches === true) {
-						text = text.replace(filterPatt, "<strong>$1</strong>");
+						//text = text.replace(filterPatt, "<strong>$1</strong>");
+						// suggested feature by Olivier Portier
+						text = text.replace(filterPatt, "$1<strong>");
+						text = text + '</strong>';
+						text = '<span class="count">(' + resultObjects[i].num + ')</span>' + text;
 					}
 					
 					$(item).append('<p class="text">' + text + '</p>');

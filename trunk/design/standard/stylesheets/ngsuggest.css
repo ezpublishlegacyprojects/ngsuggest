@@ -48,3 +48,4 @@ div.jsonSuggestResults div.resultItem p {font-size:1em; margin:0px; padding:0px;
 div.jsonSuggestResults div.resultItem p strong {font-weight:bold;}
 
 div.jsonSuggestResults div.resultItem p.extra {position:absolute; bottom:3px; right:3px;}
+div.jsonSuggestResults div.resultItem p span.count {float:right;margin-left:2em;}

@@ -16,11 +16,14 @@ jQuery('.ngsuggestfield').jsonSuggest(
         for (var i in data.facet_counts.facet_fields[f]) {
           if (i%2 == 0) {
             if (i != 0) JSONData += ',';
-            JSONData += '{"text":"' + data.facet_counts.facet_fields[f][i] + '"}';
+            JSONData += '{"text":"' + data.facet_counts.facet_fields[f][i] + '"';
+          } else {
+            JSONData += ', "num":"' + data.facet_counts.facet_fields[f][i] + '"}';
           }
           success = true;
         }
       }
+      
     }
     jQuery.ajax({
       async: false,

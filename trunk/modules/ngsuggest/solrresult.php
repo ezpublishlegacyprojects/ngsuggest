@@ -2,25 +2,15 @@
 
 $db = eZDB::instance();
 
-$installation_id_cond = "";
-$resultSet = $db->arrayQuery( 'SELECT value FROM ezsite_data WHERE name=\'ezfind_site_id\'' );
-if ( count( $resultSet ) >= 1 ) {
-	$installation_id_cond = "+AND+meta_installation_id_s:".$resultSet[0]['value'];
-}
-
-$siteini = eZINI::instance( 'site.ini' );
-$language_code_cond = "+AND+meta_language_code_s:".$siteini->variable( 'RegionalSettings', 'Locale' );
-
-
-$search_id = $_GET['id'];
-
 $ini = eZINI::instance( 'ngsuggest.ini' );
 $limit = $ini->variable( 'default', 'Limit' );
 $root_node = $ini->variable( 'default', 'RootNode' );
 $classes = $ini->variable( 'default', 'Classes' );
 $section = $ini->variable( 'default', 'Section' );
 $field = $ini->variable( 'default', 'FacetField' );
+$installation = $ini->variable( 'default', 'Installation' );
 
+$search_id = $_GET['id'];
 if(strlen($search_id))
 {	
 	if (strlen(trim($ini->variable( $search_id, 'Limit' )))) $limit = $ini->variable( $search_id, 'Limit' );
@@ -28,9 +18,28 @@ if(strlen($search_id))
 	if (is_array($ini->variable( $search_id, 'Classes' )) && count(trim($ini->variable( $search_id, 'Classes' )))) $classes = $ini->variable( $search_id, 'Classes' );
 	if (is_array($ini->variable( $search_id, 'Section' )) && count(trim($ini->variable( $search_id, 'Section' )))) $section = $ini->variable( $search_id, 'Section' );
 	if (strlen(trim($ini->variable( $search_id, 'FacetField' )))) $field = $ini->variable( $search_id, 'FacetField' );
+	if (strlen(trim($ini->variable( $search_id, 'Installation' )))) $installation = $ini->variable( $search_id, 'Installation' );
 }
+
+// INSTALLATION ID
+$installation_id_cond = "";
+if (strlen(trim($installation))>0) {
+	$installation_id_cond = "+AND+meta_installation_id_s:".$installation;
+} else {
+	$resultSet = $db->arrayQuery( 'SELECT value FROM ezsite_data WHERE name=\'ezfind_site_id\'' );
+	if ( count( $resultSet ) >= 1 ) {
+		$installation_id_cond = "+AND+meta_installation_id_s:".$resultSet[0]['value'];
+	}
+}
+
+// LANGUAGE CODE
+$siteini = eZINI::instance( 'site.ini' );
+$language_code_cond = "+AND+meta_language_code_s:".$siteini->variable( 'RegionalSettings', 'Locale' );
+
+// ROOT NODE
 $rootnode_cond = "+AND+meta_path_si:".$root_node;
 
+// CLASSES
 $classes_cond = "";
 foreach( $classes as $class ) {
 	if ($classes_cond == "") { 
@@ -43,6 +52,7 @@ if ($classes_cond != "") {
 		$classes_cond="+AND+(+".$classes_cond."+)";
 }
 
+// SECTIONS
 $section_cond = "";
 foreach( $section as $sec ) {
 	if ($section_cond == "") { 
@@ -55,6 +65,7 @@ if ($section_cond != "") {
 		$section_cond="+AND+(+".$section_cond."+)";
 }
 
+// KEYWORDS
 $keywords = explode(' ',$_GET['keyword']);
 
 $query='';
