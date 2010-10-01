@@ -34,7 +34,8 @@ if (strlen(trim($installation))>0) {
 
 // LANGUAGE CODE
 $siteini = eZINI::instance( 'site.ini' );
-$language_code_cond = "+AND+meta_language_code_s:".$siteini->variable( 'RegionalSettings', 'Locale' );
+//$language_code_cond = "+AND+meta_language_code_s:".$siteini->variable( 'RegionalSettings', 'Locale' );
+$language_code_cond = "+AND+meta_language_code_s:".$siteini->variable( 'RegionalSettings', 'ContentObjectLocale' );  // by Georg Franz
 
 // ROOT NODE
 $rootnode_cond = "+AND+meta_path_si:".$root_node;
